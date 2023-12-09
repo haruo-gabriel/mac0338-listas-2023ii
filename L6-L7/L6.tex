@@ -1,0 +1,108 @@
+\documentclass{article}
+
+\title{MAC0338 - Entrega da lista 6/7}
+\author{}
+\date{}
+
+\usepackage[a4paper, margin=1.25cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{bm}
+\usepackage[skip=2pt]{parskip}    
+\usepackage{wrapfig}
+\usepackage{braket}
+\usepackage{mathtools}
+\usepackage[noend, linesnumbered]{algorithm2e}
+\SetKwComment{Comment}{$\triangleright$\ }{}
+\RestyleAlgo{ruled}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\bigO}[1]{\ensuremath{\mathcal{O}(#1)}}
+
+\begin{document}
+
+\maketitle
+
+\section*{Algoritmos gulosos - Exercício 2}
+% enunciado
+A entrada é uma sequência de números $x_1, x_2, \dots, x_n$ onde $n$ é par.
+Projete um algoritmo que particione a entrada em $n/2$ pares da seguinte maneira. Para cada par, computamos a soma de seus números. Denote por $s_1, s_2, \dots , s_{n/2}$ as $n/2$ somas. O algoritmo deve encontrar uma partição que minimize o máximo das somas e deve ser O$(n \log n)$.
+
+\bigskip
+
+% resposta
+\subsection*{Resposta:}
+
+\begin{algorithm}
+  \caption{MinimizaSomas(x[n])}
+  \label{alg:MinimizaSomas}
+  \SetKwProg{Fn}{Function}{:}{end}
+  \Fn{MINIMIZA-SOMAS($x[n]$)}{
+    ordena(x) \Comment*[r]{O(n log n)} 
+    cria vetor vazio $s$ com índices de 1 até $n/2$ \Comment*[r]{O(n)}
+    para $i \gets 1$ até inclusive $n/2$: \Comment*[r]{O(n/2)}
+    \qquad $s_i \gets x[i] + x[n-i+1]$ \Comment*[r]{O(1)}
+    \Return{s} \Comment*[r]{O(1)}
+  }
+\end{algorithm}
+
+\subsubsection*{Corretude}
+%https://cs.stackexchange.com/questions/124596/n-numbers-n-2-pairs-minimizing-the-maximum-sum-of-a-pairing-proving-greedy-al
+Vamos provar a corretude do algoritmo acima.
+
+Ordene $x_1 \leq  \dots \leq x_n$.
+
+Caso $(x_1, x_n)$ forme um par, então já temos o que queremos.
+
+Caso contrário, suponha que $(a_1,a_k)$ seja um par tal que $r \neq n$, e $(a_n,a_l)$ seja um par tal que $s \neq 1$. Para fazer a escolha gulosa, troque $a_k$ com $a_n$ e $a_l$ com $a_1$. Agora temos $(a_1,a_n)$ e $(a_k,a_l)$. Note que
+\begin{itemize}
+  \item dentre os pares antigos $(a_1,a_k)$ e $(a_n,a_l)$, $a_1+a_k \leq a_n+a_l$;
+  \item a soma do novo par $a_1+a_n$ é menor ou igual a $a_n+a_l$, já que $a_1 \leq a_l$;
+  \item a soma do novo par $a_k+a_l$ é menor ou igual a $a_n+a_l$, já que $a_k \leq a_n$.
+\end{itemize}
+Portanto, a escolha gulosa adotada não aumenta o máximo de nenhuma soma.
+
+Agora, considere a sequência sem $x_1$ nem $x_n$, ou seja, $x_2, \dots, x_{n-1}$. Usando o mesmo raciocínio, os pares sempre serão da forma $(x_i,x_{n-i+1})$ e a soma máxima irá se manter mínima.
+
+\subsubsection*{Consumo de tempo}
+Note que, de acordo com as anotações no algoritmo \ref*{alg:MinimizaSomas}, o consumo de tempo é
+\begin{align*}
+  O(n\log n) + O(n) + (O(n/2) \cdot O(1)) + O(1) = O(n \log n) ,
+\end{align*}
+como queríamos.
+
+\newpage
+
+\section*{MST - Exercício 1}
+% https://math.stackexchange.com/questions/3082172/let-e-be-an-edge-of-minimum-weight-in-the-connected-weighted-graph-g-every
+% https://math.stackexchange.com/questions/1681816/must-a-minimum-weight-spanning-tree-for-a-graph-contain-the-least-weight-edge-of 
+% enunciado
+\textbf{(CRLS Ex. 23.1-1)} Seja $e$ uma aresta de custo mínimo em um grafo $G$ com custos nas arestas. É verdade que $e$ pertence a alguma MST de $G$? É verdade que $e$ pertence a toda MST de $G$? Sua justificativa \textbf{não} pode ser baseada nos algoritmos de Kruskal ou Prim.
+
+\bigskip
+
+% resposta
+\subsection*{Resposta:}
+\textbf{Sim, é verdade que $e$ pertence a alguma MST de $G$.}
+
+Suponha que $e$ não pertença a uma MST $T$. Adicionando $e$ em $T$, teremos um ciclo. Remova uma aresta $f \neq e$ que também está no ciclo e teremos uma nova MST $T'$. Por definição de $e$, $f$ tem custo estritamente maior que $e$, então o custo de $T$ é estritamente maior que o custo de $T'$. Achamos uma MST com custo menor que $T$! Mas como $T$ era de custo mínimo por definição, logo chegamos a uma contradição. Portanto, $e$ deve pertencer a uma MST de $G$.
+
+\bigskip
+
+\textbf{Não, não é verdade que $e$ pertence a todas as MSTs de $G$.}
+
+Eis um contraexemplo. Suponha que um grafo $G$ cíclico com todas as arestas de pesos iguais. Logo, todas as arestas têm peso mínimo, mas como $G$ tem um ciclo, logo todas as MSTs de $G$ \textbf{não} terão todas as arestas. Logo, não é verdade que $e$ pertence a todas as MSTs de $G$.
+
+\newpage
+
+\section*{MST - Exercício 4}
+% enunciado
+\textbf{(CRLS Ex. 23.1-2)} Prove ou desprove a seguinte afirmação: Dado um grafo $G$ com pesos nas arestas, um conjunto de arestas $A$ de $G$, e um corte que respeita $A$, toda aresta que cruza o corte e que é segura para $A$ tem peso mínimo dentre todas as arestas desse corte.
+
+% resposta
+\subsection*{Resposta:}
+\textbf{A afirmação é falsa.} Eis um contraexemplo.
+
+% desenhar um corte (S, G - S) tal que em S temos 2 grafos não-conexos.
+
+
+\end{document}

@@ -1,0 +1,139 @@
+\documentclass{article}
+
+\title{MAC0338 - Entrega da lista 4}
+\author{}
+\date{}
+
+\usepackage[a4paper, margin=1.25cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{bm}
+\usepackage[skip=2pt]{parskip}    
+\usepackage{wrapfig}
+\usepackage{braket}
+\usepackage{mathtools}
+\usepackage[noend, linesnumbered]{algorithm2e}
+\SetKwComment{Comment}{$\triangleright$\ }{}
+\RestyleAlgo{ruled}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\bigO}[1]{\ensuremath{\mathcal{O}(#1)}}
+
+\begin{document}
+
+\maketitle
+
+\section*{Exercício 8}
+% enunciado
+\textit{Prove que o \textsc{CountingSort} é estável.}
+
+\bigskip
+
+% resposta
+Vamos provar que o counting sort é estável construtivamente, usando como referência o código \textsc{CountingSort(A,n)} da aula 7, slide 7.
+Vamos focar nas linhas 7, 8 e 9:
+\begin{algorithm}
+  \caption{CountingSort (linhas 7, 8 e 9)}
+  para $j \gets n$ decrescendo até 1 faça \\
+  \qquad $B[C[A[j]]] \gets A[j]$ \\
+  \qquad $C[A[j]] \gets C[A[j]]-1$
+\end{algorithm}
+
+Note que estamos percorrendo o vetor $A = [a_1, a_2, \dots, a_n]$ de trás para frente e preencheremos um vetor $B = [b_1, b_2, \dots, b_n]$.
+Também temos um vetor $C = [c_1, c_2, \dots, c_k]$, que mostrará o índice que cada elemento do vetor $A$ ocupará no vetor ordenado $B$.
+
+Seja $a_x = a_y = m$ tal que $x < y$, ou seja, $a_x$ está localizado antes de $a_y$ no vetor $A$. Como estamos percorrendo o vetor $A$ de trás para frente, então $a_y$ será inserido no vetor $B$ na posição $c_m$, e logo em seguida $c_m \gets c_m - 1$. Note que os valores de $C$ nunca crescem, apenas decrescem. Portanto, em seguida $a_x$ será inserido no vetor $B$ \textbf{pelo menos} na posição $c_m - 1$, que com certeza está localizado em uma posição anterior a $a_y$.
+
+Logo, o algoritmo mantém a ordem relativa de elementos com chaves iguais durante o processo de ordenação. Isso prova que o counting sort é estável.
+
+\newpage
+
+\section*{Exercício 14}
+% enunciado
+\textit{Escreva um algoritmo que multiplica dois números complexos $a + bi$ e $c + di$ usando apenas três multiplicações reais. O seu algoritmo deve receber como entrada os números $a, b, c, d$ e devolver os números $ac - bd$ (componente real do produto) e $ad + bc$ (componente imaginária do produto).}
+
+\bigskip
+
+% resposta
+\begin{algorithm}
+  \caption{MultiplicaComplexos(a,b,c,d)}
+  $x \gets a \cdot c$ \\
+  $y \gets b \cdot d$ \\
+  $z \gets (a + b) \cdot (c + d)$ \\
+  $real \gets x - y$ \\
+  $imaginario \gets z - x - y$ \\
+  \Return{$real, imaginario$}
+\end{algorithm}
+
+Por definição, a parte real da multiplicação entre $a + bi$ e $c + di$ é $ac - bd$. Usamos uma multiplicação real para calcular $ac$ e outra para $bd$.
+
+A parte imaginária é $ad + bc$. Agora, note que
+\begin{align*}
+  (a+b) \cdot (c+d) = ac + ad + bc + bd \implies ad + bc = (a+b) \cdot (c+d) - ac - bd ,
+\end{align*}
+e usamos mais uma multiplicação real para calcular $(a+b) \cdot (c+d)$.
+
+Assim, calculamos a parte real e imaginária de uma multiplicação de complexos com 3 multiplicações reais.
+
+\newpage
+
+\section*{Exercício 15}
+% enunciado
+\textit{No \textsc{Select-BFPRT}, os elementos do vetor são divididos em grupos de 5. O algoritmo continua linear se dividirmos os elementos em grupos de 7? E em grupos de 3? Prove sua resposta.}
+
+\bigskip
+
+% resposta
+Vamos analisar o consumo de tempo quando dividimos os elementos em grupos de 7.
+
+Baseando-se no CLRS, o número de elementos maiores que $x$ (mediana das medianas) nesse caso seria
+$$4\Bigl(\Big\lceil\frac{1}{2}\Big\lceil\frac{n}{2}\Big\rceil\Big\rceil-2\Bigr) \geq \frac{4n}{14} - 8 .$$
+Assim, a função de recorrência seria, para uma constante $63$,
+\begin{align*}
+T(n) =
+  \begin{cases*}
+    O(1) &\text{se} $n < 63$ \\
+    T(\lceil n/7 \rceil) + T(6n/14+8) + O(n) &\text{se} $n \geq 63$
+  \end{cases*}
+\end{align*}
+Provaremos, assim como em CLRS, que $T(n) \leq cn$ para alguma constante $c$ adequadamente grande e para todo $n>0$.
+Também escolhemos uma constante $a$ tal que $O(n) \geq an$ para todo $n>0$.
+Logo, temos
+\begin{align*}
+  T(n) &\leq c \lceil\ n/7 \rceil + c(6n/14 + 8) + an \\
+  &\leq cn/7 + c + 6cn/14 + 8c + an \\
+  &= 8cn/14 + 9c + an \\
+  &= cn + (-6cn/14 + 9c + an)
+\end{align*}
+que é no máximo $cn$ se $-6cn/14 + 9c + an \leq 0 \implies c \geq \frac{7a}{3}(n/(n-21))$ quando $n > 21$.
+Para $n=63$, temos $n/(n-21) \leq 3$, sendo a constante $c \geq \frac{7a}{3} \cdot 3 = 7a$.
+Logo, o tempo de execução é linear quando dividimos os elementos em grupos de 7.
+
+\bigskip
+
+Agora, vamos analisar o consumo de tempo quando dividimos os elementos em grupos de 3.
+
+Analogamente, o número de elementos maiores que $x$ (mediana das medianas) nesse caso seria
+$$2\Bigl(\Big\lceil\frac{1}{2}\Big\lceil\frac{n}{2}\Big\rceil\Big\rceil-2\Bigr) \geq \frac{2n}{9} - 2 .$$
+Assim, a função de recorrência seria, para uma constante $l$,
+\begin{align*}
+T(n) =
+  \begin{cases*}
+    O(1) &\text{se} $n < l$ \\
+    T(\lceil n/3 \rceil) + T(7n/9 + 2) + O(n) &\text{se} $n \geq l$
+  \end{cases*}
+\end{align*}
+Provaremos, assim como em CLRS, que $T(n) \leq cn$ para alguma constante $c$ adequadamente grande e para todo $n>0$.
+Também escolhemos uma constante $a$ tal que $O(n) \geq an$ para todo $n>0$.
+Logo, temos
+\begin{align*}
+  T(n) &\leq c \lceil\ n/3 \rceil + c(7n/9 + 2) + an \\
+  &\leq cn/3 + c + 7cn/9 + 2c + an \\
+  &= 9cn/9 + 3c + an \\
+  &= cn + (3c + an)
+\end{align*}
+que é no máximo $cn$ se $3c + an \leq 0 \implies c \leq -an/3$ para qualquer $n > 0$.
+Escolhendo $n \geq 3$, temos $-n/3 \leq 1$, e então $c \geq a$.
+Logo, o tempo de execução também é linear quando dividimos os elementos em grupos de 3.
+
+
+\end{document}

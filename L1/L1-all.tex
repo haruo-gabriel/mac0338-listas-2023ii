@@ -1,0 +1,102 @@
+\documentclass{article}
+
+\author{}
+\title{MAC0338 - Entrega da lista x}
+\date{}
+
+\usepackage[a4paper, margin=2cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage[skip=2pt]{parskip}    
+\usepackage{wrapfig}
+\usepackage{braket}
+\usepackage{bm}
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\bigO}[1]{\ensuremath{\mathcal{O}(#1)}}
+
+
+\begin{document}
+
+\maketitle
+
+\section*{Exercício 1}
+Lembre-se que $\lg n$ denota o logaritmo na base 2 de n. Prove os seguintes itens usando a definição de notação $\mathcal{O}$ e escreva explicitamente a escolha de constantes $c$ e $n_0$.
+
+(a) $3^n$ não é \bigO{2^n}
+\begin{proof}
+Vamos provar por contradição. Portanto, assuma que $3^n$ seja \bigO{2^n}.
+Logo, há constantes inteiras positivas $c$ e $n_0$ tal que, para todo $n \geq n_0$, então $\bm{3^n \leq c \; 2^n}$.
+
+Note que, para $n > \dfrac{\lg c}{\lg \frac{3}{2}}$, temos
+\begin{align*}
+  n > \dfrac{\lg c}{\lg \frac{3}{2}} \implies n \, \lg \frac{3}{2} > \lg c \implies \lg \Bigl(\dfrac{3}{2}\Bigr)^n > \lg c \implies \dfrac{3^n}{2^n} > c \implies \bm{3^n > c \, 2^n} ,
+\end{align*}
+uma contradição. Portanto, $3^n$ não é \bigO{2^n}.
+
+\end{proof}
+
+(c) $\lg n$ é \bigO{\log_{10} n}
+\begin{proof}
+Note que
+\begin{align*}
+  \lg n = \dfrac{\log_{10} n}{\log_{10} 2} = \dfrac{1}{\log_{10} 2} \log_{10} n \implies \lg n \leq \dfrac{1}{\log_{10} 2} \log_{10} n
+\end{align*}
+Como temos uma igualdade, podemos adotar $c =\dfrac{1}{\log_{10} 2}$ e $n_0 = 1$, e está provado.
+
+\end{proof}
+
+\section*{Exercício 2}
+Prove os seguintes itens usando a definição de notação $\mathcal{O}$ e escreva explicitamente a escolha de constantes $c$ e $n_0$.
+
+(a) $n^2 + 10n + 20 = \bigO{n^2}$
+\begin{proof}
+Vamos provar que existem constantes positivas $c$ e $n_0$ tais que, para $n \geq n_0$, então $n^2 + 10n + 20 \leq c \, n^2$. Adote $c = (1 + 10 + 20)$. Então, temos que
+\begin{align*}
+  c \, n^2 = (1 + 10 + 20) n^2 = n^2 + 10n^2 + 20n^2 \geq n^2 + 10n + 20
+\end{align*}
+para todo $n \geq 1 = n_0$. Como explicitamos as constantes, está provado.
+
+\end{proof}
+
+(b) $\lceil n/3 \rceil = \bigO{n}$
+\begin{proof}
+Vamos provar que existem constantes positivas $c$ e $n_0$ tais que, para todo $n \geq n_0$, então $\lceil n/3 \rceil \leq c \, n$. Note que $\lceil n/3 \rceil \leq n/3 + 1$. Adote $c = (1+1)$ e perceba que
+\begin{align*}
+  c \, n = (1 + 1) \, n = n + n \geq \dfrac{n}{3} + 1
+\end{align*}
+para todo $n \geq 1 = n_0$. Como as constantes foram explicitadas, então está provado.
+
+\end{proof}
+
+(e) $n/1000$ não é $\bigO{1}$
+\begin{proof}
+Vamos supor por contradição que $n/1000$ é $\bigO{1}$, ou seja, que existem constantes positivas $c$ e $n_0$ tais que, para todo $n \geq n_0$, temos $\bm{n/1000 \leq c \cdot 1}$. Ora, mas para qualquer $n > 1000c$, temos $\bm{n/1000 > c}$, uma contradição. Portanto, $n/1000$ não é $\bigO{1}$.
+
+\end{proof}
+
+(e) $n^2/2$ não é $\bigO{n}$
+\begin{proof}
+Vamos supor por contradição que $n^2/2$ seja $\bigO{n}$. Logo, há constantes positivas $c$ e $n_0$ tais que, para todo $n \geq n_0$, então $n^2/2 \leq c \, n$. Isso implica que $\bm{n/2 \leq c}$. Ora, mas para todo $n > 2c$ temos $\bm{n > c}$, uma contradição. Logo, $n^2/2$ não é $\bigO{n}$.
+
+\end{proof}
+
+\section*{Exercício 3}
+% enunciado
+
+\begin{proof}
+  %
+\end{proof}
+
+\newpage
+
+\section*{Exercício 4}
+% enunciado
+
+\begin{proof}
+  %
+\end{proof}
+
+\newpage
+
+\end{document}

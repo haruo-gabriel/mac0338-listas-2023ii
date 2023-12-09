@@ -1,0 +1,108 @@
+
+\documentclass{article}
+
+\title{MAC0338 - Entrega da lista 8}
+\author{}
+\date{}
+
+\usepackage[a4paper, margin=1.25cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{bm}
+\usepackage[skip=2pt]{parskip}    
+\usepackage{wrapfig}
+\usepackage{braket}
+\usepackage{mathtools}
+\usepackage[noend, linesnumbered]{algorithm2e}
+\SetKwComment{Comment}{$\triangleright$\ }{}
+\RestyleAlgo{ruled}
+
+\begin{document}
+
+\maketitle
+
+\section*{Exercício 3}
+% enunciado
+Uma fórmula booleana $\mathcal{C}$ sobre um conjunto $X$ de variáveis booleanas (não necessariamente em CNF) é uma tautologia se toda atribuição a $X$ satisfaz $\mathcal{C}$. O problema tautologia consiste em, dado $X$ e $\mathcal{C}$, decidir se $\mathcal{C}$ é ou não uma tautologia. Prove que o problema tautologia está em coNP.
+
+\bigskip
+
+% resposta
+% https://cs.stackexchange.com/questions/76579/proof-that-taut-is-conp-complete-or-that-a-problem-is-conp-complete-if-its-comp
+\subsection*{Resposta:}
+Vamos provar que o problema \textsc{TAUT} (tautologia) está em coNP.
+Podemos provar, equivalentemente, que o complemento de \textsc{TAUT} (ou seja,  $\overline{\textsc{TAUT}}$) está em NP.
+O problema $\overline{\textsc{TAUT}}$ consiste nas fórmulas booleanas que não são tautologias.
+Para verificar que uma fórmula não é uma tautologia, basta encontrar uma atribuição que a falsifique. Existem algoritmos que fazem essa verificação \textbf{em tempo polinomial}.
+Logo, $\overline{\textsc{TAUT}}$ está em NP, o que implica que \textsc{TAUT} está em coNP.
+
+\newpage
+
+\section*{Exercício 6}
+% enunciado
+Seja $G = (V,E)$ um grafo. Um conjunto $S \subseteq V$ é \textit{independente} se quaisquer dois vértices de $S$ não são adjacentes. Ou seja, não há nenhuma aresta do grafo com as duas pontas em $S$. O problema IS consiste no seguinte: dado um grafo $G$ e um inteiro $k\geq 0$, existe um conjunto indepentente em $G$ com $k$ vértices? Mostre que o problema IS é NP-completo. \textbf{Não} pode usar o fato que o problema \textsc{clique} é NP-completo, mas pode se inspirar na prova deste teorema.
+
+\bigskip
+
+% resposta
+% https://youtu.be/GCLGc5lh0_w
+\subsection*{Resposta:}
+Vamos mostrar que o problema \textsc{IS} é tanto NP quanto o problema NP-completo \textsc{3-SAT} pode ser reduzido para \textsc{IS}.
+
+\bigskip
+
+Primeiramente, vamos provar que o problema \textsc{IS} está em NP apresentando um algoritmo polinomial que, dado um grafo $G=(V,E)$ e um conjunto de vértices $S$ (um certificado), verifica se $S$ é independente.
+O algoritmo consiste em verificar se existe aresta para cada par de vértices em $S$.
+Se não existir, então $S$ é independente.
+Caso contrário, $S$ não é independente.
+A complexidade desse algoritmo é $O(|V|+|E|)$, polinomial.
+
+\bigskip
+
+Agora, vamos provar que $\textsc{3-SAT} \leq_P \textsc{IS}$.
+Seja $\phi$ uma fórmula booleana em \textbf{3-CNF} com $n$ variáveis e exatamente $k$ cláusulas.
+Considere um grafo $G=(V,E)$.
+Cada vértice de $G$ representa um literal de cada cláusula de $\phi$.
+Vamos criar as arestas de forma que
+\begin{itemize}
+  \item os 3 vértices de literais de cada cláusula sejam ligados 2 a 2, formando um triângulo - é necessário que exatamente 1 literal de cada cláusula seja verdadeiro para garantir a independência do conjunto;
+  \item os vértices de literais complementares sejam ligados (ou seja, todos os $x_i$ e $\neg x_i$) - isso garante que $x_i$ e $\neg x_i$ nunca serão simultaneamente verdadeiros ao escolher um conjunto independente.
+\end{itemize}
+
+\medskip
+
+Agora vamos provar que $\phi$ é satisfatível $\iff$ $G$ tem um conjunto independente com $k$ vértices.
+
+($\Rightarrow$) Seja $\alpha$ uma atribuição que torna $\phi$ verdadeira.
+Logo, todas as cláusulas são verdadeiras.
+Como temos exatamente $k$ cláusulas e queremos montar um conjunto independente $S$ com exatamente $k$ vértices, então exatamente 1 literal em cada cláusula é verdadeiro para que todas as cláusulas sejam verdadeiras.
+Pelas propriedades citadas anteriormente, não há conflito de literais complementares.
+Logo, $S$ é um conjunto independente.
+
+($\Leftarrow$) Seja $S$ um conjunto independente com $k$ vértices.
+Como $S$ é independente, não há conflito de literais complementares.
+Como $S$ tem $k$ vértices e temos $k$ cláusulas em $\phi$, então exatamente 1 literal em cada cláusula é verdadeiro para que todas as cláusulas sejam verdadeiras.
+Como $S$ é independente, então todas as cláusulas são verdadeiras.
+Logo, $\phi$ é satisfatível.
+
+\bigskip
+
+Logo, $\textsc{3-SAT} \leq_P \textsc{IS}$, o que implica que \textsc{IS} é NP-completo.
+
+\newpage
+
+\section*{Exercício 9}
+% enunciado
+Mostre que o problema abaixo é NP-completo.
+\begin{center}
+  \begin{minipage}{33em}
+    \textbf{Problema} \textsc{Mochila:} Dado um número $W$, um número $V$, um número inteiro positivo $n$, uma coleção de números $w_1, \dots, w_n$, e uma coleção de números $v_1, \dots, v_n$, decidir se existe um subconjunto $S$ de $\{1, \dots, n\}$ tal que
+    \[\sum_{i \in S}w_i \leq W \mbox{ e } \sum_{i \in S}v_i \leq V .\]
+  \end{minipage}
+\end{center}
+Pode assumir que o problema \textsc{partição} (Exercício 8) é NP-completo.
+
+\bigskip
+
+% resposta
+\subsection*{Resposta:}
+\end{document}

@@ -1,0 +1,170 @@
+\documentclass{article}
+
+\author{}
+\title{MAC0338 - Entrega da lista 2}
+\date{}
+
+\usepackage[a4paper, margin=2cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{bm}
+\usepackage[skip=2pt]{parskip}    
+\usepackage{wrapfig}
+\usepackage{braket}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\bigO}[1]{\ensuremath{\mathcal{O}(#1)}}
+
+
+\begin{document}
+
+\maketitle
+
+\section*{Exercício 1}
+Seja $C$ uma constante real. Para todos os itens desta questão assuma que $T(1) \coloneqq 1$. Em cada um dos itens você deve encontrar uma fórmula fechada (não recursiva) para a recorrência que seja verdadeira em todos os valores do conjunto $S \subseteq N$ do item.
+
+\subsection*{Item (c)}
+$T(b) \coloneqq 7 T(n/3) + Cn^2$ para todo $n \geq 3$ e $S \coloneqq \{ 3^k : k \in \mathbb{N} \}$.
+
+\begin{proof}
+\textit{Expansão: }
+\begin{align*}
+  T(b) &= 7 T(n/3) + Cn^2
+  = 7 \Bigl( 7 T(n/3^2) + \frac{1}{3^2} Cn^2 \Bigr) + Cn^2 \\
+  %
+  &= 7^2 T(n/3^2) + \Bigl(1 + \frac{7}{3^2}\Bigr) Cn^2
+  %
+  = 7^2 \Bigl(7 T(n/3^3) + \frac{1}{3^4} Cn^2\Bigr) + \Bigl(1 + \frac{7}{3^2}\Bigr) Cn^2 \\
+  %
+  &= 7^3 T(n/3^3) + \Bigl(1 + \frac{7}{3^2} + \frac{7^2}{3^4}\Bigr) Cn^2
+  = 7^3 \Bigl( 7 T(n/3^4) + \frac{1}{3^6} Cn^2 \Bigr) + \Bigl(1 + \frac{7}{3^2} + \frac{7^2}{3^4}\Bigr) Cn^2 \\
+  %
+  &= 7^4 T(n/3^4) + \Bigl(1 + \frac{7}{9} + \frac{7^2}{9^2} + \frac{7^3}{9^3}\Bigr) Cn^2 \\
+  &\vdots \\
+  &= 7^k T(n/3^k) + Cn^2 \; \sum_{i=0}^{k-1} \Bigl(\frac{7}{9}\Bigr)^i
+  = 7^k T(n/3^k) + Cn^2 \; \sum_{i=1}^{k} \Bigl(\frac{7}{9}\Bigr)^{i-1} \\
+  &= 7^k T(n/3^k) + \overbrace{\frac{1 - (7/9)^{k}}{1 - 7/9}}^\text{soma de PG finita} Cn^2 
+  = 7^k T(n/3^k) + \frac{9}{2} \Bigl(1 - \Bigl(\frac{7}{9}\Bigr)^{k}\Bigr) Cn^2 
+\end{align*}
+
+\textit{Conferência: }
+
+Para $k = \log_3 n$ e $n \in S$, vamos provar que
+
+\[ T(n) = 7^{\log_3 n} + \frac{9}{2} \Bigl(1 - \Bigl(\frac{7}{9}\Bigr)^{\log_3 n}\Bigr) Cn^2 . \]
+
+Agora, fazendo indução em $k$, onde $k = \log_3 n$, temos essa expressão em termos de $k$:
+
+\[ T(3^k) = 7^k + \frac{9}{2}\Bigl(1 - \Bigl(\frac{7}{9}\Bigr)^{k}\Bigr) C3^{2k} .\]
+
+Para $k=0$,
+\[ T(3^0) = T(1) = 1 = 7^0 + \frac{9}{2} \Bigl(1 - \Bigl(\frac{7}{9}\Bigr)^{0}\Bigr) C3^{2\cdot 0}. \]
+
+Agora, suponha $k \geq 1$ e verdade para $k-1$. Então
+\begin{align*}
+  T(3^k) &= 7 T(3^{k-1}) + C3^{2k} \\
+  %
+  &= 7 \underbrace{\Biggl[ 7^{k-1} + \frac{9}{2}\Bigl(1 - \Bigl(\frac{7}{9}\Bigr)^{k-1}\Bigr) C3^{2(k-1)}\Biggr]}_\text{H.I.} + C3^{2k} \\
+  &= 7^k + 7 \cdot \frac{9}{2}\Bigl(1 - \Bigl(\frac{7}{9}\Bigr)^{k-1}\Bigr) \frac{1}{9}C3^{2k} + C3^{2k} \\
+  &= 7^k + C3^{2k} \Bigl[\frac{9}{2}\cdot\frac{7}{9}\Bigl(1 - \Bigl(\frac{7}{9}\Bigr)^{k-1}\Bigr) + 1\Bigr] \\
+  &= 7^k + C3^{2k} \Bigl[\frac{9}{2}\Bigl(\frac{7}{9} - \Bigl(\frac{7}{9}\Bigr)^{k}\Bigr) + \frac{9}{2}\cdot\frac{2}{9}\Bigr] \\
+  &= 7^k + C3^{2k} \Bigl[\frac{9}{2}\Bigl(\frac{7}{9} - \Bigl(\frac{7}{9}\Bigr)^{k} + \frac{2}{9}\Bigr)\Bigr] \\
+  &= 7^k + \frac{9}{2}\Bigl(1 - \Bigl(\frac{7}{9}\Bigr)^{k}\Bigr) C3^{2k} ,
+\end{align*}
+como queríamos.
+
+\end{proof}
+
+\newpage
+
+\subsection*{Item (d)}
+$T(b) \coloneqq 2 T(n/2) + Cn^3$ para todo $n \geq 2$ e $S \coloneqq \{ 2^k : k \in \mathbb{N} \}$.
+
+\begin{proof}
+\textit{Expansão: }
+\begin{align*}
+  T(b) &= 2 T(n/2) + Cn^3
+  = 2 \Bigl[ 2 T(n/2^2) + \frac{1}{2^3} Cn^3 \Bigr] + Cn^3 \\
+  &= 2^2 T(n/2^2) + \Bigl(1 + \frac{1}{2^2}\Bigr) Cn^2
+  = 2^2 \Bigl[2 T(n/2^3) + \frac{1}{2^6} Cn^3\Bigr] + \Bigl(1 + \frac{7}{2^2}\Bigr) Cn^3 \\
+  &= 2^3 T(n/2^3) + \Bigl(1 + \frac{1}{2^2} + \frac{1}{2^4}\Bigr) Cn^3
+  = 2^3 \Bigl[2 T(n/2^4) + \frac{1}{2^9} Cn^2 \Bigr] + \Bigl(1 + \frac{1}{2^2} + \frac{1}{2^4}\Bigr) Cn^3 \\
+  &= 2^4 T(n/2^4) + \Bigl(1 + \frac{1}{4} + \frac{1}{4^2} + \frac{1}{4^3}\Bigr) Cn^3 \\
+  &\vdots \\
+  &= 2^k T(n/2^k) + Cn^3 \; \sum_{i=0}^{k-1} \Bigl(\frac{1}{4}\Bigr)^i
+  = 2^k T(n/2^k) + Cn^3 \; \sum_{i=1}^{k} \Bigl(\frac{1}{4}\Bigr)^{i-1} \\
+  &= 2^k T(n/2^k) + \overbrace{\frac{1 - (1/4)^{k}}{1 - 1/4}}^\text{soma de PG finita} Cn^3
+  = 2^k T(n/2^k) + \frac{4}{3} \Bigl(1 - \Bigl(\frac{1}{4}\Bigr)^{k}\Bigr) Cn^3
+\end{align*}
+
+\textit{Conferência: }
+
+Para $k = \log_2 n$ e $n \in S$, vamos provar que
+
+\begin{align*}
+  T(n) &= 2^{\log_2 n} + \frac{4}{3} \Bigl(1 - \Bigl(\frac{1}{4}\Bigr)^{\log_2 n}\Bigr) Cn^3 \\
+  %&= n + \frac{4}{3} \Bigl(1 - \frac{1}{n^2}\Bigr) Cn^3 \\
+  %&= n + \frac{4}{3}Cn^3 - \frac{4}{3}Cn
+\end{align*}
+
+Agora, fazendo indução em $k$, onde $k = \log_2 n$, temos essa expressão em termos de $k$:
+
+\[ T(2^k) = 2^k + \frac{4}{3}\Bigl(1 - \Bigl(\frac{1}{4}\Bigr)^{k}\Bigr) C2^{3k} .\]
+
+Para $k=0$,
+\[ T(2^0) = T(1) = 1 = 2^0 + \frac{4}{3} \Bigl(1 - \Bigl(\frac{1}{4}\Bigr)^{0}\Bigr) C2^{3\cdot 0}. \]
+
+Agora, suponha $k \geq 1$ e verdade para $k-1$. Então
+\begin{align*}
+  T(2^k) &= 2 T(2^{k-1}) + C2^{3k} \\
+  &= 2 \underbrace{\Biggl[ 2^{k-1} + \frac{4}{3}\Bigl(1 - \Bigl(\frac{1}{4}\Bigr)^{k-1}\Bigr) C2^{3(k-1)}\Biggr]}_\text{H.I.} + C2^{3k} \\
+  &= 2^k + 2 \cdot \frac{4}{3}\Bigl(1 - \Bigl(\frac{1}{4}\Bigr)^{k-1}\Bigr) \frac{1}{8}C2^{3k} + C2^{3k} \\
+  &= 2^k + C2^{3k} \Bigl[\frac{4}{3}\cdot\frac{1}{4}\Bigl(1 - \Bigl(\frac{1}{4}\Bigr)^{k-1}\Bigr) + 1\Bigr] \\
+  &= 2^k + C2^{3k} \Bigl[\frac{4}{3}\Bigl(\frac{1}{4} - \Bigl(\frac{1}{4}\Bigr)^{k}\Bigr) + \frac{4}{3}\cdot\frac{3}{4}\Bigr] \\
+  &= 2^k + C2^{3k} \Bigl[\frac{4}{3}\Bigl(\frac{1}{4} - \Bigl(\frac{1}{4}\Bigr)^{k} + \frac{3}{4}\Bigr)\Bigr] \\
+  &= 2^k + \frac{4}{3}\Bigl(1 - \Bigl(\frac{1}{4}\Bigr)^{k}\Bigr) C2^{3k} ,
+\end{align*}
+como queríamos.
+
+\end{proof}
+
+\newpage
+
+\section*{Exercício 3}
+Considere a sequência de vetores $A_k[1..2^k], A_{k-1}[1..2^{k-1}], \dots, A_1[1..2^1]$, e $A_0[1..2^0]$.
+Suponha que cada um dos vetores é crescente.
+Queremos reunir, por meio de sucessivas operações de intercalação ($= merge$), o conteúdo dos vetores $A_0, \dots, A_k$ em um único vetor crescente $B[1..n]$, onde $n = 2^{k+1} - 1$.
+Escreva um algoritmo que faça isso em $\bigO{n}$ unidades de tempo. Use como subrotina o $\mbox{INTERCALA}$ visto em aula.
+
+\begin{algorithm}
+\caption{mergeAll}
+\begin{algorithmic}[1]
+\Procedure{mergeAll}{$A$}
+  \State $k \gets \log_2(\text{len(A)} + 1) - 1$
+  \For{$i \gets 1$ to $k$}
+    \State \Call{intercala}{$A, 0, 2i-2, 2i$}
+  \EndFor
+  \State \Return $A$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{Main}
+\begin{algorithmic}[1]
+\State $A0 \gets [5]$
+\State $A1 \gets [1, 7]$
+\State $A2 \gets [2, 3, 4, 6]$
+\State $A \gets [\underbrace{5}_\text{A0}, \underbrace{1, 7}_\text{A1}, \underbrace{2, 3, 4, 6}_\text{A2}]$
+\State $B \gets$\Call{mergeAll}{$A$}
+\end{algorithmic}
+\end{algorithm}
+
+
+\newpage
+
+
+\end{document}

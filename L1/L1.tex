@@ -1,0 +1,111 @@
+\documentclass{article}
+
+\title{MAC0338 - Entrega da lista 1}
+\date{}
+\author{Gabriel Haruo Hanai Takeuchi - NUSP: 13671636}
+
+\usepackage[a4paper, margin=2cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{parskip}    
+\usepackage{wrapfig}
+\usepackage{braket}
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\bigO}[1]{\ensuremath{\mathcal{O}(#1)}}
+
+
+\begin{document}
+
+\maketitle
+
+\section*{Exercício 1(b)}
+Lembre-se que $\lg n$ denota o logaritmo na base 2 de n. Prove os seguintes itens usando a definição de notação $\mathcal{O}$ e escreva explicitamente a escolha de constantes $c$ e $n_0$.
+
+(b) $\log_{10} n$ é $\bigO{\lg n}$
+
+\begin{proof}
+Vamos provar que existem constantes positivas $n_0$ e $c$ tal que, para todo $n \geq n_0$, $\log_{10} n \leq c \lg n$.
+Note que
+\begin{align*}
+  \log_{10} n = \dfrac{\lg n}{\lg 10} = \dfrac{1}{\lg 10}\lg n \implies \log_{10} n \leq \dfrac{1}{\lg 10} \lg n .
+\end{align*}
+Como $\log_{10} n = \dfrac{1}{\lg 10}\lg n$ é uma igualdade, podemos fixar $c = \dfrac{1}{\lg 10}$ e $n_0 = 1$, por exemplo, e está provado.
+
+\end{proof}
+
+\newpage
+
+\section*{Exercício 2(d)}
+Prove os seguintes itens usando a definição de notação $\mathcal{O}$ e escreva explicitamente a escolha de constantes $c$ e $n_0$.
+
+(d) $n = \bigO{2^n}$
+
+\begin{proof}
+Vamos provar que $n = \bigO{2^n}$, ou seja, que existem constantes positivas $c$ e $n_0$ tais que, para todo $n \geq n_0$, $n \leq c \; 2^n$.
+Note que para qualquer $c \geq 1$ e $n_0 \geq 0$, é verdade que $n \leq 1 \cdot 2^n$.
+Vamos provar rapidamente por indução em $n$, fixando $c=1$.
+
+Base: Para $n=0$, $0 \leq 1 \cdot 2^0 = 1$.
+
+Passo: Fixe $n \geq 1$ e suponha verdade para $n-1$. Então
+\begin{align*}
+  n-1 \leq 1 \cdot 2^{n-1} \implies 2n - 2 \leq 2^n \implies n \leq \dfrac{2^n + 2}{2} \leq 2^n .
+\end{align*}
+Portanto, para $c = 1$ e $n_0 = 0$, está provado.
+
+\end{proof}
+
+\newpage
+
+\section*{Exercício 3(b)}
+Prove ou dê um contra-exemplo para as afirmações abaixo:
+
+(b) Se $f(n) = \Theta(g(n))$ e $g(n) = \Theta(h(n))$, então $f(n) = \Theta(h(n))$.
+
+\begin{proof}
+Note que temos $f(n) = \Theta(g(n))$, ou seja, existem constantes positivas $c_1, c_2$ e $n_0$ tais que, para todo $n \geq n_0$, $c_1 \, g(n) \leq f(n) \leq c_2 \, g(n)$.
+Note também que $g(m) = \Theta(h(m))$, ou seja, existem constantes positivas $k_1, k_2$ e $m_0$ tais que, para todo $m \geq m_0$, $k_1 \, h(m) \leq g(n) \leq k_2 \, h(m)$.
+Combinando as afirmações acima, temos que
+\begin{align*}
+  c_1 (k_1 \, h(m)) \leq c_1 \ g(n) \leq f(n) \leq c_2 \, g(n) \leq c_2 (k_2 \, h(m)) .
+\end{align*}
+
+Logo, adotando as constantes $t_1 = c_1 \, k_1$, $t_2 = c_2 \, h_2$ e $v_0 = n_0 + m_0$ (isto pois $v_0$ deve ser pelo menos maior que $n_0$ e maior que $m_0$), então temos que, para todo $v \geq v_0$,
+\begin{align*}
+  t_1 h(v) \leq f(v) \leq t_2 h(v)
+\end{align*}
+o que implica que $f(v) = \Theta(h(v))$, como queríamos.
+
+\end{proof}
+
+\newpage
+
+\section*{Exercício 4(a)}
+Prove os seguintes itens. Para o item (a) escreva explicitamente a escolha de constantes $c$ e $n_0$.
+
+(a) $\sum_{i=1}^{n} i^{10}$ é $\Theta(n^{11})$
+
+Vamos separar a prova em duas partes:
+
+Parte I: $\sum_{i=1}^{n} i^{10}$ é $\bigO{n^{11}}$.
+
+Vamos provar que existem constantes positivas $c$ e $n_0$ tal que, para todo $n \geq n_0$, $\sum_{i=1}^{n} i^{10} \leq c \; n^{11}$. Note que
+\begin{align*}
+  \sum_{i=1}^{n} i^{10} = 1 + 2^{10} + \dots + n^{10} \leq \underbrace{n^{10} + n^{10} + \dots + n^{10}}_\text{$n$ termos} = n \cdot n^{10} = n^{11}.
+\end{align*}
+Logo, temos as constantes $n_0 = 1$ e $c = 1$, como queríamos.
+
+\medskip
+
+Parte II: $\sum_{i=1}^{n} i^{10}$ é $\Omega (n^{11})$.
+
+Vamos provar que existem constantes positivas $c$ e $n_0$ tal que, para todo $n \geq n_0$, $\sum_{i=1}^{n} i^{10} \geq c \; n^{11}$. Note que
+%\begin{align*}
+%  \sum_{i=1}^{n} i^{10} = 1 + 2^{10} + \dots + n^{10} \geq 
+%\end{align*}
+
+%Como provamos que $\sum_{i=1}^{n} i^{10}$ é $\bigO{n^{11}}$ e também é $\Omega (n^{11})$, então conclui-se que $\sum_{i=1}^{n} i^{10}$ é $\Theta(n^{11})$.
+
+
+\end{document}

@@ -1,0 +1,80 @@
+
+\documentclass{article}
+
+\title{MAC0338 - Lista 9}
+\author{}
+\date{}
+
+\usepackage[a4paper, margin=1.25cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{bm}
+\usepackage[skip=2pt]{parskip}    
+\usepackage{wrapfig}
+\usepackage{braket}
+\usepackage{multicol}
+\usepackage{mathtools}
+\usepackage[noend, linesnumbered]{algorithm2e}
+\SetKwComment{Comment}{$\triangleright$\ }{}
+\RestyleAlgo{ruled}
+
+\begin{document}
+
+\maketitle
+
+\section*{Exercício 3}
+% enunciado
+\textbf{(CLRS 17.2-1)} Uma sequência de operações sobre uma pilha é executada numa pilha cujo tamanho nunca excede $k$. Depois de cada $k$ operações, uma cópia da pilha toda é feita para propósito de back-up. Mostre que o custo de $n$ operações sobre a pilha, incluindo as operações de cópia para back-up, é $O(n)$, atribuindo valores adequados de créditos a cada operação.
+
+\bigskip
+
+% resposta
+\subsection*{Resposta:}
+Vamos analisar os custos reais de cada operação da pilha:
+\begin{multicols}{4}
+\begin{itemize}
+  \item \textsc{push}: 1
+  \item \textsc{pop}: 1
+  \item \textsc{multipop}: $\min(k,s)$
+  \item \textsc{backup}: $\min(k,s)$
+\end{itemize}
+\end{multicols}
+
+Agora, vamos desenvolver os custos amortizados de cada operação da pilha:
+\begin{multicols}{4}
+\begin{itemize}
+  \item \textsc{push}: 2
+  \item \textsc{pop}: 0
+  \item \textsc{multipop}: 0
+  \item \textsc{backup}: 0
+\end{itemize}
+\end{multicols}
+Suponha que a operação \textsc{backup} é uma varredura na pilha inteira (ou seja, uma consulta de cada elemento empilhado, mas sem realizar \textsc{pop}'s).
+Cobramos 2 para cada operação de \textsc{push}: 1 para o custo do próprio \textsc{push} e 1 para compensar uma futura operação \textsc{pop} ou de cópia para o \textsc{backup}.
+Como a pilha tem capacidade máxima de $k$ elementos e o \textsc{backup} é realizado a cada $k$ operações, então sempre temos crédito suficiente para, no pior caso, um \textsc{backup} da pilha inteira.
+Portanto, asseguramos que a quantia que temos de crédito é sempre não-negativa.
+Assim, para qualquer sequência de $n$ operações listadas, o custo amortizado total é um limite superior para o custo real.
+Visto que o custo amortizado de uma operação é $O(1)$, então o custo amortizado total para uma sequência de $n$ operações é $n \cdot O(1) = O(n)$, que também é o custo real.
+
+\newpage
+
+\section*{Exercício 6}
+% enunciado
+
+\bigskip
+
+% resposta
+\subsection*{Resposta:}
+
+
+\newpage
+
+\section*{Exercício 9}
+% enunciado
+
+\bigskip
+
+% resposta
+\subsection*{Resposta:}
+
+
+\end{document}
