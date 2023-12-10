@@ -41,14 +41,14 @@ Vamos analisar os custos reais de cada operação da pilha:
 Agora, vamos desenvolver os custos amortizados de cada operação da pilha:
 \begin{multicols}{4}
 \begin{itemize}
-  \item \textsc{push}: 2
+  \item \textsc{push}: 3
   \item \textsc{pop}: 0
   \item \textsc{multipop}: 0
   \item \textsc{backup}: 0
 \end{itemize}
 \end{multicols}
 Suponha que a operação \textsc{backup} é uma varredura na pilha inteira (ou seja, uma consulta de cada elemento empilhado, mas sem realizar \textsc{pop}'s).
-Cobramos 2 para cada operação de \textsc{push}: 1 para o custo do próprio \textsc{push} e 1 para compensar uma futura operação \textsc{pop} ou de cópia para o \textsc{backup}.
+Cobramos 3 para cada operação de \textsc{push}: 1 para o custo do próprio \textsc{push}, 1 para compensar uma futura operação \textsc{pop} e 1 para compensar uma  cópia para o \textsc{backup}.
 Como a pilha tem capacidade máxima de $k$ elementos e o \textsc{backup} é realizado a cada $k$ operações, então sempre temos crédito suficiente para, no pior caso, um \textsc{backup} da pilha inteira.
 Portanto, asseguramos que a quantia que temos de crédito é sempre não-negativa.
 Assim, para qualquer sequência de $n$ operações listadas, o custo amortizado total é um limite superior para o custo real.
@@ -63,17 +63,5 @@ Visto que o custo amortizado de uma operação é $O(1)$, então o custo amortiz
 
 % resposta
 \subsection*{Resposta:}
-
-
-\newpage
-
-\section*{Exercício 9}
-% enunciado
-
-\bigskip
-
-% resposta
-\subsection*{Resposta:}
-
 
 \end{document}
