@@ -1,6 +1,7 @@
 \documentclass{article}
 
-\title{MAC0338 - Entrega da lista 6/7}
+%\title{MAC0338 - Entrega da lista 6/7}
+\title{MAC0338 - Lista 6}
 \author{}
 \date{}
 
@@ -22,7 +23,7 @@
 
 \maketitle
 
-\section*{Algoritmos gulosos - Exercício 2}
+\section*{Exercício 2}
 % enunciado
 A entrada é uma sequência de números $x_1, x_2, \dots, x_n$ onde $n$ é par.
 Projete um algoritmo que particione a entrada em $n/2$ pares da seguinte maneira. Para cada par, computamos a soma de seus números. Denote por $s_1, s_2, \dots , s_{n/2}$ as $n/2$ somas. O algoritmo deve encontrar uma partição que minimize o máximo das somas e deve ser O$(n \log n)$.
@@ -72,37 +73,29 @@ como queríamos.
 
 \newpage
 
-\section*{MST - Exercício 1}
-% https://math.stackexchange.com/questions/3082172/let-e-be-an-edge-of-minimum-weight-in-the-connected-weighted-graph-g-every
-% https://math.stackexchange.com/questions/1681816/must-a-minimum-weight-spanning-tree-for-a-graph-contain-the-least-weight-edge-of 
-% enunciado
-\textbf{(CRLS Ex. 23.1-1)} Seja $e$ uma aresta de custo mínimo em um grafo $G$ com custos nas arestas. É verdade que $e$ pertence a alguma MST de $G$? É verdade que $e$ pertence a toda MST de $G$? Sua justificativa \textbf{não} pode ser baseada nos algoritmos de Kruskal ou Prim.
+\section*{Exercício 4}
+%enunciado
+Seja $1,\dots, n$ um conjunto de tarefas. Cada tarefa consome um dia de trabalho; durante um dia de trabalho somente uma das tarefas pode ser executada. Os dias de trabalho são numerados de 1 a $n$. A cada tarefa $t$ está associado um prazo $p_t$
+: a tarefa deveria ser executada em algum dia do intervalo $1 . . p_t$. A cada tarefa $t$ está associada uma multa $m_t \geq 0$. Se uma dada tarefa $t$ é executada depois do prazo $p_t$, sou obrigado a pagar a multa $m_t$ (mas a multa não depende do número de dias de atraso).
+
+\textbf{Problema}: Programar as tarefas (ou seja, estabelecer uma bijeção entre as tarefas e os dias de trabalho) de modo a minimizar a multa total. Considere o algoritmo que primeiramente ordena as tarefas pela multa; a seguir, considera uma
+a uma cada tarefa, escalonando-a no último dia livre dentro do seu prazo. Se não houver dia livre dentro do prazo, escalona a tarefa no último dia livre.
+
+Prove que esse algoritmo está correto, ou seja, produz um escalonamento com multa mínima. Analise seu consumo de tempo.
 
 \bigskip
 
-% resposta
+%resposta
 \subsection*{Resposta:}
-\textbf{Sim, é verdade que $e$ pertence a alguma MST de $G$.}
+Seja $O$ uma solução ótima.
 
-Suponha que $e$ não pertença a uma MST $T$. Adicionando $e$ em $T$, teremos um ciclo. Remova uma aresta $f \neq e$ que também está no ciclo e teremos uma nova MST $T'$. Por definição de $e$, $f$ tem custo estritamente maior que $e$, então o custo de $T$ é estritamente maior que o custo de $T'$. Achamos uma MST com custo menor que $T$! Mas como $T$ era de custo mínimo por definição, logo chegamos a uma contradição. Portanto, $e$ deve pertencer a uma MST de $G$.
-
-\bigskip
-
-\textbf{Não, não é verdade que $e$ pertence a todas as MSTs de $G$.}
-
-Eis um contraexemplo. Suponha que um grafo $G$ cíclico com todas as arestas de pesos iguais. Logo, todas as arestas têm peso mínimo, mas como $G$ tem um ciclo, logo todas as MSTs de $G$ \textbf{não} terão todas as arestas. Logo, não é verdade que $e$ pertence a todas as MSTs de $G$.
-
-\newpage
-
-\section*{MST - Exercício 4}
-% enunciado
-\textbf{(CRLS Ex. 23.1-2)} Prove ou desprove a seguinte afirmação: Dado um grafo $G$ com pesos nas arestas, um conjunto de arestas $A$ de $G$, e um corte que respeita $A$, toda aresta que cruza o corte e que é segura para $A$ tem peso mínimo dentre todas as arestas desse corte.
-
-% resposta
-\subsection*{Resposta:}
-\textbf{A afirmação é falsa.} Eis um contraexemplo.
-
-% desenhar um corte (S, G - S) tal que em S temos 2 grafos não-conexos.
-
+Considere uma tarefa $t_i$ dentre as tarefas.
+Se $t_i$ está escalonada em algum dia antes do próprio prazo, então podemos trocar $t_i$ com a tarefa $t_j$, escalonada no prazo de $t_i$, e obter uma solução $O'$ com multa igual a $O$.
+Se $t_i$ está escalonada em algum dia depois do próprio prazo, então vamos separar em 2 casos:
+\begin{itemize}
+  \item Se $p_{t_i} \leq i$, então existe uma tarefa $t_h$ que possui multa menor ou igual a $t_i$. Logo, basta trocar $t_i$ com $t_h$ e obter uma solução $O'$ com multa menor que $O$. Mas como $O$ é ótima, isso não é possível.
+  \item Se $p_{t_i} > i$, então podemos trocar $t_i$ com qualquer tarefa que esteja escalonada após o prazo de $t_i$ e obter uma solução $O'$ com multa menor ou igual a $O$.
+\end{itemize}
+Logo, o algoritmo guloso é ótimo.
 
 \end{document}

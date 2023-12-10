@@ -1,0 +1,58 @@
+\documentclass{article}
+
+\title{MAC0338 - Entrega da lista 6/7}
+\author{}
+\date{}
+
+\usepackage[a4paper, margin=1.25cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{bm}
+\usepackage[skip=2pt]{parskip}    
+\usepackage{wrapfig}
+\usepackage{braket}
+\usepackage{mathtools}
+\usepackage[noend, linesnumbered]{algorithm2e}
+\SetKwComment{Comment}{$\triangleright$\ }{}
+\RestyleAlgo{ruled}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\bigO}[1]{\ensuremath{\mathcal{O}(#1)}}
+
+\begin{document}
+
+\maketitle
+
+\section*{Exercício 1}
+% https://math.stackexchange.com/questions/3082172/let-e-be-an-edge-of-minimum-weight-in-the-connected-weighted-graph-g-every
+% https://math.stackexchange.com/questions/1681816/must-a-minimum-weight-spanning-tree-for-a-graph-contain-the-least-weight-edge-of 
+% enunciado
+\textbf{(CRLS Ex. 23.1-1)} Seja $e$ uma aresta de custo mínimo em um grafo $G$ com custos nas arestas. É verdade que $e$ pertence a alguma MST de $G$? É verdade que $e$ pertence a toda MST de $G$? Sua justificativa \textbf{não} pode ser baseada nos algoritmos de Kruskal ou Prim.
+
+\bigskip
+
+% resposta
+\subsection*{Resposta:}
+\textbf{Sim, é verdade que $e$ pertence a alguma MST de $G$.}
+
+Suponha que $e$ não pertença a uma MST $T$. Adicionando $e$ em $T$, teremos um ciclo. Remova uma aresta $f \neq e$ que também está no ciclo e teremos uma nova MST $T'$. Por definição de $e$, $f$ tem custo estritamente maior que $e$, então o custo de $T$ é estritamente maior que o custo de $T'$. Achamos uma MST com custo menor que $T$! Mas como $T$ era de custo mínimo por definição, logo chegamos a uma contradição. Portanto, $e$ deve pertencer a uma MST de $G$.
+
+\bigskip
+
+\textbf{Não, não é verdade que $e$ pertence a todas as MSTs de $G$.}
+
+Eis um contraexemplo. Suponha que um grafo $G$ cíclico com todas as arestas de pesos iguais. Logo, todas as arestas têm peso mínimo, mas como $G$ tem um ciclo, logo todas as MSTs de $G$ \textbf{não} terão todas as arestas. Logo, não é verdade que $e$ pertence a todas as MSTs de $G$.
+
+\newpage
+
+\section*{MST - Exercício 4}
+% enunciado
+\textbf{(CRLS Ex. 23.1-2)} Prove ou desprove a seguinte afirmação: Dado um grafo $G$ com pesos nas arestas, um conjunto de arestas $A$ de $G$, e um corte que respeita $A$, toda aresta que cruza o corte e que é segura para $A$ tem peso mínimo dentre todas as arestas desse corte.
+
+% resposta
+\subsection*{Resposta:}
+\textbf{A afirmação é falsa.} Eis um contraexemplo.
+
+% desenhar um corte (S, G - S) tal que em S temos 2 grafos não-conexos.
+
+
+\end{document}
