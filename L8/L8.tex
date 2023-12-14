@@ -11,6 +11,7 @@
 \usepackage[skip=2pt]{parskip}    
 \usepackage{wrapfig}
 \usepackage{braket}
+\usepackage{multicol}
 \usepackage{mathtools}
 \usepackage[noend, linesnumbered]{algorithm2e}
 \SetKwComment{Comment}{$\triangleright$\ }{}
@@ -96,7 +97,7 @@ Mostre que o problema abaixo é NP-completo.
 \begin{center}
   \begin{minipage}{33em}
     \textbf{Problema} \textsc{Mochila:} Dado um número $W$, um número $V$, um número inteiro positivo $n$, uma coleção de números $w_1, \dots, w_n$, e uma coleção de números $v_1, \dots, v_n$, decidir se existe um subconjunto $S$ de $\{1, \dots, n\}$ tal que
-    \[\sum_{i \in S}w_i \leq W \mbox{ e } \sum_{i \in S}v_i \leq V .\]
+    \[\sum_{i \in S}w_i \leq W \mbox{ e } \sum_{i \in S}v_i \geq V .\]
   \end{minipage}
 \end{center}
 Pode assumir que o problema \textsc{partição} (Exercício 8) é NP-completo.
@@ -105,4 +106,40 @@ Pode assumir que o problema \textsc{partição} (Exercício 8) é NP-completo.
 
 % resposta
 \subsection*{Resposta:}
+Vamos mostrar que o problema \textsc{Mochila} é tanto NP quanto o problema NP-completo \textsc{partição} pode ser reduzido para \textsc{Mochila}.
+
+\bigskip
+
+Primeiramente, vamos provar que o problema \textsc{Mochila} está em NP.
+Isso é facilmente verificado, pois basta computar $\sum_{i \in S}w_i \leq W$ e $\sum_{i \in S}v_i \geq V$, o que toma tempo polinomial.
+
+\bigskip
+
+Agora, vamos provar que $\textsc{partição} \leq_P \textsc{Mochila}$. Ou seja,
+\[ \mbox{existe solução } S' \mbox{para \textsc{partição}} \iff \mbox{existe solução } S \mbox{para \textsc{mochila}}\]
+
+($\Rightarrow$) Considere o problema \textsc{partição} com $S = s_1, \dots, s_n$, e considere o problema \textsc{mochila} com
+\[ W = V = \frac{1}{2}\sum_{i=1}^n s_i \mbox{ e } w_i = v_i = s_i \mbox{ para } i=1, \dots, n . \]
+Suponha que exista uma solução para \textsc{partição}, ou seja, um subconjunto $S' \subset S$ tal que
+\[ \sum_{i \in S'}s_i = \sum_{i \in S \setminus S'}s_i = \frac{1}{2}\sum_{i=1}^n s_i .\]
+Se considerarmos que os índices de $S'$ são os itens escolhidos para a mochila, então temos que
+\[ \sum_{i \in S'}w_i = \sum_{i \in S'}a_i = \frac{1}{2}\sum_{i=1}^n s_i = W \implies \sum_{i \in S'}w_i \leq W . \]
+Analogamente, também temos que
+\[ \sum_{i \in S'}v_i = \sum_{i \in S'}a_i = \frac{1}{2}\sum_{i=1}^n s_i = V \implies \sum_{i \in S'}v_i \geq V . \]
+Logo, $S'$ é uma solução para \textsc{mochila}.
+
+($\Leftarrow$) Considere uma solução $S'$ para \textsc{mochila}, ou seja, um subconjunto $S' \subset \set{1,\dots, n}$ tal que
+\[ \sum_{i \in S'}w_i \leq W \mbox{ e } \sum_{i \in S'}v_i \geq V .\]
+Se considerarmos que $S'$ é a partição desejada de \textsc{partição} e $W = V = \frac{1}{2}\sum_{i=1}^n s_i$, então temos que
+\[ \sum_{i \in S'}w_i = \sum_{i \in S'}s_i \leq W = \frac{1}{2}\sum_{i=1}^n s_i \mbox{ e }\sum_{i \in S'}v_i = \sum_{i \in S'}s_i \geq V = \frac{1}{2}\sum_{i=1}^n s_i .\]
+As expressões acima implicam que
+\[ \sum_{i \in S'}s_i \begin{cases}\geq \\ \leq \end{cases}  \frac{1}{2}\sum_{i=1}^n s_i \implies \sum_{i \in S'}s_i = \frac{1}{2}\sum_{i=1}^n s_i .\]
+Seja $S'' = \set{1,\dots, n} \setminus S'$, ou seja, a outra partição que sobrou de $\set{1,\dots,n}$. Então
+\[ \sum_{i \in S'}s_i = \frac{1}{2}\sum_{i=1}^n s_i
+\implies \sum_{i \in S''}s_i = \sum_{i=1}^n s_i - \frac{1}{2}\sum_{i=1}^n s_i
+\implies \sum_{i \in S''}s_i = \frac{1}{2}\sum_{i=1}^n s_i . \]
+Como as partições tem a soma igual, então $S'$ também é solução para \textsc{partição}.
+Logo, está provada a redução, e portanto \textsc{mochila} é NP-completo.
+
+
 \end{document}
